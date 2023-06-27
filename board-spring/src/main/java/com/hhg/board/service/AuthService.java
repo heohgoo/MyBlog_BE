@@ -6,6 +6,7 @@ import com.hhg.board.dto.SignInResponseDto;
 import com.hhg.board.dto.SignUpDto;
 import com.hhg.board.entity.UserEntity;
 import com.hhg.board.repository.UserRepository;
+import com.hhg.board.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,9 @@ public class AuthService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TokenProvider tokenProvider;
 
     public ResponseDto<?> signUp(SignUpDto dto) {
         String userEmail = dto.getUserEmail();
@@ -35,7 +39,6 @@ public class AuthService {
         //UserEntity 생성
         UserEntity userEntity = new UserEntity(dto);
         //UserRepository를 통해 데이터베이스에 저장
-
         try {
             userRepository.save(userEntity);
         } catch (Exception e) {
@@ -65,7 +68,8 @@ public class AuthService {
         }
         userEntity.setUserPassword("");
 
-        String token = "";
+        //JWT(Json Web Token)
+        String token = tokenProvider.create(userEmail);
         int exprTime = 3600000;
 
         SignInResponseDto signInResponseDto = new SignInResponseDto(token, exprTime, userEntity);
