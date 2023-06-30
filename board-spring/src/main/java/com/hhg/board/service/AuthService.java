@@ -55,7 +55,7 @@ public class AuthService {
 
         try {
             boolean existed = userRepository.existsByUserEmailAndUserPassword(userEmail, userPassword);
-            if (!existed) return ResponseDto.setFailed("SignUp information does not exist");
+            if (!existed) return ResponseDto.setFailed("SignIn information does not exist");
         } catch (Exception e) {
             return ResponseDto.setFailed("Database Error!");
         }
