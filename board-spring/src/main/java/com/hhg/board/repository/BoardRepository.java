@@ -16,4 +16,6 @@ public interface BoardRepository extends JpaRepository <BoardEntity, Integer> {
     public List<BoardEntity> findByOrderByBoardWriteDateDesc();
     //최신 순서대로 게시물 가져온다.
 
+    public List<BoardEntity> findByBoardTitleContains(String boardTitle);
+
 }
